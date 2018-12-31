@@ -3,3 +3,4 @@ venv/
 *.xlsx
 __pycache__/
 *.pyc
+sensorsdata_01.yaml
