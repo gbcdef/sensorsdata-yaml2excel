@@ -4,6 +4,7 @@ venv/
 __pycache__/
 *.pyc
 sensorsdata_01.yaml
+data_02.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

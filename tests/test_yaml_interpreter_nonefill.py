@@ -1,12 +1,12 @@
 import unittest
 
-from main import SensorsInterpretor
+from yaml_interpreter import YAMLInterpretor
 
 
 class LoadYamlTest(unittest.TestCase):
 
     def setUp(self):
-        self.si = SensorsInterpretor()
+        self.si = YAMLInterpretor()
 
     def test_load_yaml_to_2d_list(self):
         yaml = '''
@@ -15,10 +15,10 @@ class LoadYamlTest(unittest.TestCase):
           y: 2
         '''
         res = self.si.load_yaml(yaml)
-        self.assertEqual(res, [
+        self.assertEqual([
             ['a', 'x', 1],
-            ['a', 'y', 2]
-        ], '')
+            [None, 'y', 2]
+        ], res)
 
     def test_load_yaml_with_null(self):
         yaml = '''
@@ -30,19 +30,19 @@ class LoadYamlTest(unittest.TestCase):
         '''
         res = self.si.load_yaml(yaml)
 
-        self.assertEqual(res, [
+        self.assertEqual([
             ['a', 'x', 1],
-            ['a', 'y', None, '注释'],
-            ['a', 'y', None, None]
-        ])
+            [None, 'y', None, '注释'],
+            [None, None, None, None]
+        ], res)
 
     def test_load_yaml_file(self):
         filepath = 'mock_data/01.yaml'
         res = self.si.load_file(filepath)
-        self.assertEqual(res, [
+        self.assertEqual([
             ['a', 'x', 1],
-            ['a', 'y', 2]
-        ])
+            [None, 'y', 2]
+        ], res)
 
     def test_load_wrong_file(self):
         res = self.si.load_file('abc.asdf')

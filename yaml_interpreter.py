@@ -4,7 +4,7 @@ from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap
 
 
-class SensorsInterpretor:
+class YAMLInterpretor:
     def __init__(self):
         pass
 
