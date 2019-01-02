@@ -66,10 +66,10 @@ def convert_yaml_to_excel(yaml_file_path):
     ws = workbbook.add_worksheet('sensorsdata')
 
     # 设置工作表样式
-    ws.set_column('A:A', 20)
-    ws.set_column('B:D', 30)
-    ws.set_column('E:E', 24)
-    ws.set_column('F:F', 50)
+    ws.set_column('A:B', 20)
+    ws.set_column('C:E', 30)
+    ws.set_column('F:F', 24)
+    ws.set_column('G:G', 50)
     ws.set_default_row(20)
     ws.freeze_panes(1, 0)
 
@@ -86,6 +86,7 @@ def convert_yaml_to_excel(yaml_file_path):
 
     # 标题行
     WORKSHEET_TITLE = [
+        '模块',
         '页面',
         '数据采集时机',
         '事件英文名',
@@ -95,7 +96,7 @@ def convert_yaml_to_excel(yaml_file_path):
     ]
 
     ws.write_row('A1', WORKSHEET_TITLE, TITLE_FORMAT)
-    merge_2d_list_to_worksheet(li_csv, ws, 3)
+    merge_2d_list_to_worksheet(li_csv, ws, 4)
     workbbook.close()
 
 
