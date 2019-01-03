@@ -11,6 +11,11 @@
        biStateBegin: # <-如果事件属性有多种可以取的值时，使用list形式全部列出
          - true: 浏览前已经收藏
          - false: 浏览前未收藏
+   点击登录按钮:
+     click:
+       screenName: 首页
+       buttonName:
+         - null: 当前按钮上显示的文案
  # -------------------
  ```
  将被转为：
@@ -24,7 +29,7 @@
     <th>取该值的条件/取值说明</th>
   </tr>
   <tr>
-    <td rowspan=3>首页</td>
+    <td rowspan=5>首页</td>
     <td rowspan=3>浏览</td>
     <td rowspan=3>$MPViewScreen</td>
     <td>screenName</td>
@@ -41,6 +46,16 @@
     <td>浏览前未收藏</td>
   </tr>
   <tr>
+    <td rowspan=2>点击登录按钮</td>
+    <td rowspan=2>click</td>
+    <td>screenName</td>
+    <td>首页</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>buttonName</td>
+    <td></td>
+    <td>当前按钮上显示的文案</td>
   </tr>
 </table>
 
