@@ -1,13 +1,20 @@
 #!/usr/bin/python
 
 import xlsxwriter as xlwt
-import sys
+import argparse
 
 from yaml_interpreter import YAMLInterpretor
 
 
-def merge_2d_list_to_worksheet(li_csv, worksheet, MERGE_COLUMN_LIMIT=3):
+def merge_2d_list_to_worksheet(li_csv, worksheet, MERGE_COLUMN_LIMIT):
+    """
+    :param li_csv: 2维数组
+    :param worksheet: 工作表对象
+    :param MERGE_COLUMN_LIMIT: 合并单元格的列数范围，如：合并前4列的单元格
+    :return: 工作表对象
+    """
     ws = worksheet
+    MERGE_COLUMN_LIMIT -= 1
 
     i, j = 1, 0
     for row in li_csv:
@@ -24,7 +31,6 @@ def merge_2d_list_to_worksheet(li_csv, worksheet, MERGE_COLUMN_LIMIT=3):
                 # 否则
                 else:
                     # 找到下一个不为空的同列单元格
-
                     while li_csv[merge_end_row][cur_col_index] is None:
                         merge_end_row += 1
                         if merge_end_row == len(li_csv):
@@ -54,10 +60,10 @@ def merge_2d_list_to_worksheet(li_csv, worksheet, MERGE_COLUMN_LIMIT=3):
     return ws
 
 
-def convert_yaml_to_excel(yaml_file_path):
+def convert_yaml_to_excel(yaml_file_path, output_file_name, merge_column_limit):
     si = YAMLInterpretor()
     li_csv = si.load_file(yaml_file_path)
-    workbbook = xlwt.Workbook('workbook.xlsx')
+    workbbook = xlwt.Workbook(output_file_name)
 
     # 工作簿默认单元格样式
     workbbook.formats[0].set_align('vcenter')
@@ -74,7 +80,7 @@ def convert_yaml_to_excel(yaml_file_path):
     ws.freeze_panes(1, 0)
 
     # 标题行样式
-    TITLE_FORMAT = workbbook.add_format({
+    title_format = workbbook.add_format({
         'bold': True,
         'align': 'center',
         'bg_color': '#16a085',
@@ -85,7 +91,7 @@ def convert_yaml_to_excel(yaml_file_path):
     })
 
     # 标题行
-    WORKSHEET_TITLE = [
+    worksheet_title = [
         '页面',
         '数据采集时机',
         '事件英文名',
@@ -94,16 +100,22 @@ def convert_yaml_to_excel(yaml_file_path):
         '取该值的条件/取值说明'
     ]
 
-    ws.write_row('A1', WORKSHEET_TITLE, TITLE_FORMAT)
-    merge_2d_list_to_worksheet(li_csv, ws, 3)
+    ws.write_row('A1', worksheet_title, title_format)
+    merge_2d_list_to_worksheet(li_csv, ws, merge_column_limit)
     workbbook.close()
 
 
 if __name__ == '__main__':
-    if len(sys.argv) >=2 :
-        try:
-            convert_yaml_to_excel(sys.argv[1])
-        except:
-            print('YAML文件读取错误')
-    else:
-        print('请指定YAML文件地址')
+    argv_parser = argparse.ArgumentParser()
+    argv_parser.add_argument('yaml_path', help='input yaml filepath')
+    argv_parser.add_argument('-f', default='workbook.xlsx', dest='file', help='output excel filename, default workbook.xlsx')
+    argv_parser.add_argument('-l', default=4, type=int, dest='limit',
+                             help='first N column cells will be merge vertically if empty, start from 1, default 4')
+
+    argv = argv_parser.parse_args()
+
+    argv.file += '' if argv.file.endswith('.xlsx') else '.xlsx'
+
+    convert_yaml_to_excel(argv.yaml_path,
+                          output_file_name=argv.file,
+                          merge_column_limit=argv.limit)

@@ -14,7 +14,7 @@ class LoadYamlTest(unittest.TestCase):
           x: 1
           y: 2
         '''
-        res = self.si.load_yaml(yaml)
+        res = self.si.load(yaml)
         self.assertEqual([
             ['a', 'x', 1],
             [None, 'y', 2]
@@ -28,7 +28,7 @@ class LoadYamlTest(unittest.TestCase):
             - null: 注释
             - null
         '''
-        res = self.si.load_yaml(yaml)
+        res = self.si.load(yaml)
 
         self.assertEqual([
             ['a', 'x', 1],

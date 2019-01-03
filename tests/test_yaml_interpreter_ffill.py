@@ -6,7 +6,7 @@ from yaml_interpreter import YAMLInterpretor
 class LoadYamlTest(unittest.TestCase):
 
     def setUp(self):
-        self.si = YAMLInterpretor()
+        self.si = YAMLInterpretor(fill_with_none=False)
 
     def test_load_yaml_to_2d_list(self):
         yaml = '''
@@ -14,7 +14,7 @@ class LoadYamlTest(unittest.TestCase):
           x: 1
           y: 2
         '''
-        res = self.si.load_yaml(yaml)
+        res = self.si.load(yaml)
         self.assertEqual(res, [
             ['a', 'x', 1],
             ['a', 'y', 2]
@@ -28,7 +28,7 @@ class LoadYamlTest(unittest.TestCase):
             - null: 注释
             - null
         '''
-        res = self.si.load_yaml(yaml)
+        res = self.si.load(yaml)
 
         self.assertEqual(res, [
             ['a', 'x', 1],
